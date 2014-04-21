@@ -33,6 +33,7 @@ Version 2.0 introduces new modern APIs which leverage the latest .NET platform a
 
 Below is an example of a simple Normal Search:
 ```csharp
+using Splunk.Client;
 
 var service = new Service(Scheme.Https, "localhost", 8089));
 
