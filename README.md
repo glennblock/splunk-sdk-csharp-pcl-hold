@@ -29,7 +29,30 @@ Version 2.0 introduces new modern APIs which leverage the latest .NET platform a
 
 * Async/await - All APIs are 100% async
 * Reactive Extensions - Splunk query results implement IObservable to be used with the RX framework.
-* Support for multiple platforms - The new version is a Portable Class Library.
+* Support for multiple platforms - The new version includes the API client pieces as a Portable Class Library.
+
+## Compatability
+
+Version 2.0 is a complete rewrite of the existing SDK. Existing applications will not recompile using the new version.
+
+Version 2.0 includes a subset of capability in the existing SDK focusing on the most common scenarios that we have seen customers using. The major focus areas are Search / Jobs, Configuration and Modular Inputs.
+
+Below is a breakdown of the areas covered:
+
+* Login
+* Access Control - users and passwords
+* Searches - Normal, Blocking, One Shot and Export
+* Jobs
+* Saved Searches
+* Configuration / Config Properties
+* Indexes
+* Inputs (Receiving Simple and Streamed events)
+* Applications
+* Modular Inputs
+
+For detailed API coverage, see this document.
+
+We will be publishing guidance on how to migrate existing CSharp SDK applications to use the new SDK.
 
 ## Getting started with the Splunk SDK for C# 
 
