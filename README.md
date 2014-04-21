@@ -27,13 +27,21 @@ that are enabled by Splunk's unique capabilities.
 
 Version 2.0 introduces new modern APIs which leverage the latest .NET platform advancements. 
 
-* Async/await - All APIs are 100% async
-* Reactive Extensions - Splunk query results implement IObservable to be used with the RX framework.
-* Support for multiple platforms - The new version includes the API client pieces as a Portable Class Library.
+* Async - All APIs are 100% async supporting the new [async/await](http://msdn.microsoft.com/en-us/library/hh191443.aspx) features.
+* Reactive Extensions - Splunk query results implement [IObservable<T>](http://msdn.microsoft.com/en-us/library/dd990377(v=vs.110).aspx) allowing usage with the [.NET Reactive Extensions](http://msdn.microsoft.com/en-us/data/gg577610).
+* Support for multiple platforms - The Splunk API Client (Splunk.Client.dll) in the new version is a [Portable Class Library](http://msdn.microsoft.com/en-us/library/vstudio/gg597391(v=vs.110).aspx).
+
+```csharp
+using (var service = new Service(Scheme.Https, "localhost", 8089, new Namespace(user: "nobody", app: "search")))
+{
+    Run(service).Wait();
+}
+```
+
 
 ## Compatability
 
-Version 2.0 is a complete rewrite of the existing SDK. Existing applications will not recompile using the new version.
+Version 2.0 is a rewrite of the existing SDK, and introduces completely new APIS. Existing applications will not recompile using the new version.
 
 Version 2.0 includes a subset of capability in the existing SDK focusing on the most common scenarios that we have seen customers using. The major focus areas are Search / Jobs, Configuration and Modular Inputs.
 
@@ -51,6 +59,8 @@ Below is a breakdown of the areas covered:
 * Modular Inputs
 
 For detailed API coverage, see this [excel sheet](http://test.com)
+
+We will be continuing to evolve the SDK going and filling in the gaps based on the feedback from customers.
 
 We will be publishing guidance on how to migrate existing CSharp SDK applications to use the new SDK.
 
