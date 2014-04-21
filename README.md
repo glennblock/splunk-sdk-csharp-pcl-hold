@@ -50,7 +50,7 @@ Below is a breakdown of the areas covered:
 * Applications
 * Modular Inputs
 
-For detailed API coverage, see this [document].
+For detailed API coverage, see this [excel sheet](http://test.com)
 
 We will be publishing guidance on how to migrate existing CSharp SDK applications to use the new SDK.
 
