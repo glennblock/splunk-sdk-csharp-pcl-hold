@@ -1,7 +1,7 @@
 # The Splunk Software Development Kit for C# 
 ### Version 2.0 pre-release
 
-**Note: The Splunk SDK for C# is in-development and is not currently supported.** 
+**Note: The Splunk SDK for C# is in-development and is not currently supported.**
 
 The Splunk Software Development Kit (SDK) for C# contains library code and 
 examples designed to enable developers to build applications using Splunk.
@@ -24,6 +24,8 @@ that are enabled by Splunk's unique capabilities.
 .NET 4.5, Windows Phone 8.1, Xamarin IOS/Android.
 
 ## What's new in Version 2.0.
+
+Version 2.0 introduces new modern APIs which leverage the latest .NET platform advancements. 
 
 * Async/await - All APIs are 100% async
 * Reactive Extensions - Splunk query results implement IObservable to be used with the RX framework.
