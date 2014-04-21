@@ -31,10 +31,24 @@ Version 2.0 introduces new modern APIs which leverage the latest .NET platform a
 * Reactive Extensions - Splunk query results implement [IObservable<T>](http://msdn.microsoft.com/en-us/library/dd990377(v=vs.110).aspx) allowing usage with the [.NET Reactive Extensions](http://msdn.microsoft.com/en-us/data/gg577610).
 * Support for multiple platforms - The Splunk API Client (Splunk.Client.dll) in the new version is a [Portable Class Library](http://msdn.microsoft.com/en-us/library/vstudio/gg597391(v=vs.110).aspx).
 
+Below is an example of a simple Normal Search:
 ```csharp
-using (var service = new Service(Scheme.Https, "localhost", 8089, new Namespace(user: "nobody", app: "search")))
+
+var service = new Service(Scheme.Https, "localhost", 8089));
+
+//connect
+await service.LoginAsync("admin", "changeme");
+
+//create a job
+var job = await service.StartJobAsync("search index=_internal | head 10");
+
+//get the results
+var searchResults = await job.GetSearchResultsAsync());
+
+//loop through the results
+foreach (var record in searchResults)
 {
-    Run(service).Wait();
+    Console.WriteLine(string.Format("{0:D8}: {1}", ++recordNumber, record));
 }
 ```
 
