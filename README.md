@@ -28,6 +28,7 @@ that are enabled by Splunk's unique capabilities.
 Version 2.0 introduces new modern APIs which leverage the latest .NET platform advancements. 
 
 * Async - All APIs are 100% async supporting the new [async/await](http://msdn.microsoft.com/en-us/library/hh191443.aspx) features.
+* All APIs follow .NET Guidelines and abide by FX Cop and Style Cop rules.
 * Reactive Extensions - Splunk query results implement [IObservable<T>](http://msdn.microsoft.com/en-us/library/dd990377(v=vs.110).aspx) allowing usage with the [.NET Reactive Extensions](http://msdn.microsoft.com/en-us/data/gg577610).
 * Support for multiple platforms - The Splunk API Client (Splunk.Client.dll) in the new version is a [Portable Class Library](http://msdn.microsoft.com/en-us/library/vstudio/gg597391(v=vs.110).aspx).
 
@@ -53,7 +54,6 @@ foreach (var record in searchResults)
 }
 ```
 
-
 ## Compatability
 
 Version 2.0 is a rewrite of the existing SDK, and introduces completely new APIS. Existing applications will not recompile using the new version.
@@ -75,9 +75,7 @@ Below is a breakdown of the areas covered:
 
 For detailed API coverage, see this [excel sheet](http://test.com)
 
-We will be continuing to evolve the SDK going and filling in the gaps based on the feedback from customers.
-
-We will be publishing guidance on how to migrate existing CSharp SDK applications to use the new SDK.
+We will publish guidance on how to migrate existing CSharp SDK applications to use the new SDK.
 
 ## Getting started with the Splunk SDK for C# 
 
@@ -206,5 +204,5 @@ You can reach the Dev Platform team at devinfo@splunk.com.
 
 ## License
 
-The Splunk SDK for C# PCL is licensed under the Apache License 2.0. Details can be 
+The Splunk SDK for C# is licensed under the Apache License 2.0. Details can be 
 found in the LICENSE file.
