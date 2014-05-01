@@ -128,9 +128,7 @@ namespace Splunk.Client
         { return this.GetEnumerator(); }
 
 
-        IDisposable connection = Disposable.Empty;
-        IConnectableObservable<SearchResults> observableResult = null;
-
+        IObservable<SearchResults> observableResult = null;
         public IObservable<SearchResults> AsObservable()
         {
             // NB: Because this result is inherently *live data*, we
@@ -150,10 +148,10 @@ namespace Splunk.Client
             observableResult = readOneItem
                 .Repeat()
                 .TakeWhile(x => x != null)
-                .Finally(() => this.Dispose())
-                .Publish();
+                .Finally(() => this.Dispose ())
+                .Publish()
+                .RefCount();
 
-            connection = observableResult.Connect();
             return observableResult;
         }
 
@@ -166,8 +164,6 @@ namespace Splunk.Client
 
         void Dispose(bool disposing)
         {
-            Interlocked.Exchange(ref connection, Disposable.Empty).Dispose();
-
             if (disposing && !this.disposed)
             {
                 this.response.Dispose();
