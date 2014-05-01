@@ -85,7 +85,7 @@ namespace Splunk.Client.Examples
                 var manualResetEvent = new ManualResetEvent(true);
                 int recordNumber = 0;
 
-                searchResults.SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(
+                searchResults.AsObservable().SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(
                     onNext: (record) =>
                     {
                         Console.WriteLine(string.Format("{0:D8}: {1}", ++recordNumber, record));
@@ -198,7 +198,7 @@ namespace Splunk.Client.Examples
                     Console.WriteLine(string.Format("Result set {0}", ++setNumber));
                     var manualResetEvent = new ManualResetEvent(true);
 
-                    resultSet.SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(
+                    resultSet.AsObservable().SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(
                         onNext: (record) =>
                         {
                             Console.WriteLine(string.Format("{0:D8}: {1}", ++recordNumber, record));
