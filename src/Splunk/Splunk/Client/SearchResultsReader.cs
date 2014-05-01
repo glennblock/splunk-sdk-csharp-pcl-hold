@@ -47,13 +47,18 @@ namespace Splunk.Client
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
+    using System.Reactive.Threading.Tasks;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
     /// The <see cref="SearchResultsReader"/> class represents a streaming XML 
     /// reader for Splunk <see cref="SearchResults"/>.
     /// </summary>
-    public sealed class SearchResultsReader : Observable<SearchResults>, IDisposable, IEnumerable<SearchResults>
+    public sealed class SearchResultsReader : IDisposable, IEnumerable<SearchResults>
     {
         #region Constructors
 
@@ -122,22 +127,34 @@ namespace Splunk.Client
         IEnumerator IEnumerable.GetEnumerator()
         { return this.GetEnumerator(); }
 
-        /// <summary>
-        /// Pushes <see cref="SearchResults"/> to subscribers and then completes.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Task"/>
-        /// </returns>
-        override protected async Task PushObservations()
-        {
-            do
-            {
-                var searchResults = await SearchResults.CreateAsync(this.response, leaveOpen: true);
-                this.OnNext(searchResults);
-            }
-            while (await this.response.XmlReader.ReadToFollowingAsync("results"));
 
-            this.OnCompleted();
+        IDisposable connection = Disposable.Empty;
+        IConnectableObservable<SearchResults> observableResult = null;
+
+        public IObservable<SearchResults> AsObservable()
+        {
+            // NB: Because this result is inherently *live data*, we
+            // can't return a Cold Observable. Stop us from ending up
+            // with skewed data (i.e. one subscriber having some data
+            // and another subscriber having a different set of data)
+            if (observableResult != null) return observableResult;
+
+            var readOneItem = Observable.Defer(() => Observable.StartAsync(async () =>
+            {
+                var ret = await SearchResults.CreateAsync(this.response, leaveOpen: true);
+                await this.response.XmlReader.ReadToFollowingAsync("results");
+
+                return ret;
+            }));
+
+            observableResult = readOneItem
+                .Repeat()
+                .TakeWhile(x => x != null)
+                .Finally(() => this.Dispose())
+                .Publish();
+
+            connection = observableResult.Connect();
+            return observableResult;
         }
 
         #endregion
@@ -149,6 +166,8 @@ namespace Splunk.Client
 
         void Dispose(bool disposing)
         {
+            Interlocked.Exchange(ref connection, Disposable.Empty).Dispose();
+
             if (disposing && !this.disposed)
             {
                 this.response.Dispose();
